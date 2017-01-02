@@ -51,12 +51,44 @@ class Cat(cellular.Agent):
     score = 0
     colour = 'orange'
 
-    def update(self):
+    def __init__(self, mode='A*'):
+        self.mode = mode
+        if mode == 'A*':
+            self.update = self.update_AStar
+        else:
+            self.update = self.update_default
+
+    def update_default(self):
+        ''' go towards mouse direction naviely '''
         cell = self.cell
         if cell != mouse.cell:
             self.goTowards(mouse.cell)
-            while cell == self.cell:
+            if cell == self.cell:
                 self.goInDirection(random.randrange(directions))
+
+    def update_AStar(self):
+        ''' Go to mouse using A* path finding algorithm'''
+        the_map = world.getMap()
+        n = len(the_map[0]) # num cols
+        m = len(the_map) # num rows
+        dirs = directions # number of allowable movement directions, eg. 8
+        dx, dy = world.getdxdy()
+
+        xA = self.cell.x
+        yA = self.cell.y
+
+        xB = mouse.cell.x
+        yB = mouse.cell.y
+
+        route = Astar.pathFind(the_map, n, m, dirs, dx, dy, xA, yA, xB, yB)
+        if route:
+            self.goInDirection(int(route[0]))
+        else:
+            self.goInDirection(random.randrange(directions))
+
+
+
+
 
 
 class Cheese(cellular.Agent):
@@ -135,7 +167,7 @@ world.addAgent(cat)
 #world.addAgent(cat2)
 world.addAgent(mouse) # mouse needs to be at the end for proper display
 
-endAge = world.age + 150000
+endAge = world.age + 350000
 
 t0 = time.time()
 t = t0

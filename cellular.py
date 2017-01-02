@@ -91,6 +91,8 @@ class Agent:
             self.cell = best
 
 
+
+
 class World:
     def __init__(self, cell=None, width=None, height=None, directions=8, filename=None):
         if cell is None:
@@ -213,6 +215,21 @@ class World:
         self.display.update()
         self.age += 1
 
+    def getdxdy(self):
+        '''Return a vectors of dx and dy for each direction'''
+        if self.directions == 8:
+            dxdy = [(0, -1), (1, -1), (
+                1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+        elif self.directions == 4:
+            dxdy = [(0, -1), (1, 0), (0, 1), (-1, 0)]
+        elif self.directions == 6:
+            return 'unsupported'
+        dx = [i[0] for i in dxdy]
+        dy = [i[1] for i in dxdy]
+        return (dx, dy)
+
+
+
     def getPointInDirection(self, x, y, dir):
         if self.directions == 8:
             dx, dy = [(0, -1), (1, -1), (
@@ -255,6 +272,16 @@ class World:
         agent.cell = self.grid[y][x]
         agent.dir = dir
         agent.world = self
+
+    def getMap(self):
+        ''' Get the world map. Wall is denoted as 1'''
+        map = []
+        for row in self.grid:
+            map.append([ int(cell.wall) for cell in row])
+        return map
+
+
+
 
 
 import time
