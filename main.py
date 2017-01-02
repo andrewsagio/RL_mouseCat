@@ -73,14 +73,9 @@ class Cat(cellular.Agent):
         m = len(the_map) # num rows
         dirs = directions # number of allowable movement directions, eg. 8
         dx, dy = world.getdxdy()
-
-        xA = self.cell.x
-        yA = self.cell.y
-
-        xB = mouse.cell.x
-        yB = mouse.cell.y
-
-        route = Astar.pathFind(the_map, n, m, dirs, dx, dy, xA, yA, xB, yB)
+        start = (self.cell.x, self.cell.y)
+        goal = (mouse.cell.x, mouse.cell.y)
+        route = Astar.pathFind2(the_map, dirs, dx, dy, start, goal)
         if route:
             self.goInDirection(int(route[0]))
         else:
@@ -167,7 +162,7 @@ world.addAgent(cat)
 #world.addAgent(cat2)
 world.addAgent(mouse) # mouse needs to be at the end for proper display
 
-endAge = world.age + 350000
+endAge = world.age + 150000
 
 t0 = time.time()
 t = t0

@@ -7,6 +7,24 @@ import math
 import time
 import random
 
+def pathFind2(the_map, dirs, dx, dy, start, goal):
+    ''' wrapper function for A* pathfind
+        the_map: a list matrix with element 0 or 1. 1 is wall.
+        dirs: list of possible directions
+        dx: step change in x direction
+        dy: step change in y direction
+        start: (x,y) coordinates of start position
+        goal: (x,y) coordinates of end position
+    '''
+    n = len(the_map[0])
+    m = len(the_map)
+    for r in the_map:
+        assert n == len(r)
+    xA, yA = start
+    xB, yB = goal
+    return pathFind(the_map, n, m, dirs, dx, dy, xA, yA, xB, yB)
+
+
 class node:
     xPos = 0 # x position
     yPos = 0 # y position
